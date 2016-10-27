@@ -1,0 +1,46 @@
+package VoterBooth;
+
+import java.util.ArrayList;
+
+/**
+ * @author Roger Ferguson
+ *
+ */
+public class Sim {
+
+	private static ArrayList<Voter> Qbooths = new ArrayList<Voter>();
+	private static ArrayList<Voter> Q = new ArrayList<Voter>();
+
+	
+	public static void main (String[] args) {
+		
+
+		Clock clk = new Clock();
+		TableAL tableal = new TableAL(Qbooths);
+		TableMZ tablemz = new TableMZ(Qbooths);
+		Booth booth = new Booth(Q);
+		// 		int numOfTicksNextPerson = 20 
+		//      int averageBoothTime = 20
+
+		VoterProducer produce = new VoterProducer(tableal,tablemz,booth,20,20);	
+		
+		clk.add(produce);
+		clk.add(booth);
+		clk.add(tableal);
+		clk.add(tablemz);
+
+		clk.run(10000);
+
+		System.out.println("Through put is: " + booth.getThroughPut() + " people.");
+		System.out.println("People that are still in the Q:" + booth.getLeft() + " people.");
+		System.out.println ("Max Q length:" + booth.getMaxQlength() + " people.");
+		System.out.println("");
+		System.out.println("Through put at Table A - L: " + tableal.getThroughPut() + " people");
+		System.out.println("Through put  at Table M - Z: " + tablemz.getThroughPut() + " people");
+//		System.out.println("Max Q at Table A - L: " + tableal.getMaxQlength() + " people");
+//		System.out.println("Max Q at Table M - Z: " + tablemz.getMaxQlength() + " people");
+//		System.out.println("People still at Table A - L: " + tableal.getLeft() + " people");
+//		System.out.println("People still at Table M - Z: " + tablemz.getLeft() + " people");
+//		System.out.println("");
+	}
+}
