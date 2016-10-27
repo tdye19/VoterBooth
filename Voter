@@ -1,0 +1,55 @@
+package VoterBooth;
+/**
+ * @author   Roger Ferguson
+ */
+	public class Voter{
+		
+	private int tickTime;
+	private Booth Destination;
+	protected int leaveTime;
+	protected double checkInTime;
+	protected double boothTime;
+	
+	
+	public double getBoothTime() {
+		return boothTime;
+	}
+	
+	public Booth getDestination() {
+		return Destination;
+	}
+
+	public void setDestination(Booth destination) {
+		this.Destination = destination;
+	}
+	
+	public int getTickTime() {
+		return tickTime;
+	}
+
+	public void setTickTime(int tickTime) {
+		this.tickTime = tickTime;
+	}
+
+	public void setBoothTime(double checkInTime) {
+		this.boothTime = checkInTime;
+	}
+
+	public int getLeaveTime() {
+		return leaveTime;
+	}
+
+	public void setLeaveTime(int leaveTime) {
+		this.leaveTime = leaveTime;
+	}
+
+	public double getCheckInTime() {
+		return checkInTime;
+	}
+
+	public void setCheckInTime(double checkInTime) {
+		this.checkInTime = checkInTime;
+	}
+	
+	
+}
