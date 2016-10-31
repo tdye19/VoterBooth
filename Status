@@ -1,0 +1,38 @@
+package VoterBooth;
+
+public class Status {
+
+	private int numLeftLine;
+	private int QboothTime;
+	private int EnterQTime;
+	private int averageStartToFinish;
+	
+	
+	
+	public int getNumLeftLine() {
+		return numLeftLine;
+	}
+	public void setNumLeftLine(int numLeftLine) {
+		this.numLeftLine = numLeftLine;
+	}
+	public int getQboothTime() {
+		return QboothTime;
+	}
+	public void setQboothTime(int qboothTime) {
+		QboothTime = qboothTime;
+	}
+	public int getEnterQTime() {
+		return EnterQTime;
+	}
+	public void setEnterQTime(int enterQTime) {
+		EnterQTime = enterQTime;
+	}
+	public int getAverageStartToFinish() {
+		return averageStartToFinish;
+	}
+	public void setAverageStartToFinish(int averageStartToFinish) {
+		this.averageStartToFinish = averageStartToFinish;
+	}
+	
+	
+}
