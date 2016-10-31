@@ -1,0 +1,21 @@
+package VoterBooth;
+
+public class LimtedTimeVoter extends Voter{
+
+	@Override
+	public void setCheckInTime(int checkInTime) {
+		this.checkInTime = checkInTime;
+	}
+
+	@Override
+	public void setLeaveTime(int leaveTime) {
+		this.leaveTime = (int) (leaveTime * 0.5);
+	}
+
+	@Override
+	public void setVotingBoothTime(int votingBoothTime) {
+		this.votingBoothTime = (int) (votingBoothTime * 0.5);
+		
+	}
+
+}
