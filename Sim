@@ -7,40 +7,46 @@ import java.util.ArrayList;
  *
  */
 public class Sim {
-
-	private static ArrayList<Voter> Qbooths = new ArrayList<Voter>();
-	private static ArrayList<Voter> Q = new ArrayList<Voter>();
-
 	
 	public static void main (String[] args) {
 		
-
+		 ArrayList<Voter> Qbooths = new ArrayList<Voter>();
+		 Status status = new Status();
+		 
 		Clock clk = new Clock();
-		TableAL tableal = new TableAL(Qbooths);
-		TableMZ tablemz = new TableMZ(Qbooths);
-		Booth booth = new Booth(Q);
+		Table tableal = new Table(Qbooths);
+		Table tablemz = new Table(Qbooths);
+		Booth[] booths = new Booth[100];
+		
+		
+		
 		// 		int numOfTicksNextPerson = 20 
 		//      int averageBoothTime = 20
 
-		VoterProducer produce = new VoterProducer(tableal,tablemz,booth,20,20);	
+		VoterProducer produce = new VoterProducer(tableal,tablemz,20,20,20,20,20);	
 		
+		for (int i = 0; i < 10; i++) {
+			booths[i] = new Booth(Qbooths);
+			clk.add(booths[i]);
+		}
+			
 		clk.add(produce);
-		clk.add(booth);
 		clk.add(tableal);
 		clk.add(tablemz);
-
 		clk.run(10000);
 
-		System.out.println("Through put is: " + booth.getThroughPut() + " people.");
-		System.out.println("People that are still in the Q:" + booth.getLeft() + " people.");
-		System.out.println ("Max Q length:" + booth.getMaxQlength() + " people.");
-		System.out.println("");
+		//System.out.println("Through put is: " + booth.getThroughPut() + " people.");
+		//System.out.println("People that are still in the Q:" + booth.getLeft() + " people.");
+		//System.out.println ("Max Q length:" + Booth.getMaxQlength() + " people.");
+		
 		System.out.println("Through put at Table A - L: " + tableal.getThroughPut() + " people");
 		System.out.println("Through put  at Table M - Z: " + tablemz.getThroughPut() + " people");
-//		System.out.println("Max Q at Table A - L: " + tableal.getMaxQlength() + " people");
-//		System.out.println("Max Q at Table M - Z: " + tablemz.getMaxQlength() + " people");
-//		System.out.println("People still at Table A - L: " + tableal.getLeft() + " people");
-//		System.out.println("People still at Table M - Z: " + tablemz.getLeft() + " people");
+		
+		System.out.println("Max Q at Table A - L: " + tableal.getMaxQlength() + " people");
+		System.out.println("Max Q at Table M - Z: " + tablemz.getMaxQlength() + " people");
+		
+		System.out.println("People still at Table A - L: " + tableal.getLeft() + " people");
+		System.out.println("People still at Table M - Z: " + tablemz.getLeft() + " people");
 //		System.out.println("");
 	}
 }
