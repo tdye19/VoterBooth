@@ -1,4 +1,3 @@
-# VoterBooth
 
 package VoterBooth;
 import java.util.ArrayList;
@@ -13,26 +12,13 @@ public class Booth implements ClockListener {
 	private Voter person;   // this is the person at the booth. 
 	private int completed = 0;
 	
-
-	
-	
-
 	public Booth(ArrayList<Voter> Q) {
+      this.Q = Q;
 	}
 
-	public void add (Voter person)
-	{
-		Q.add(person);
-		if (Q.size() > maxQlength)
-			maxQlength = Q.size();
-	}
-	
 	public void event (int tick){
 		if (tick >= timeOfNextEvent) {
-//			if (person != null) { 			// Notice the delay that takes place here
-//				person.getDestination().add(person);    // take this person to the next station. 
-//			person = null;				// I have send the person on. 
-			}
+
 			
 			if(Q.size() >= 1){ 
 				person = Q.remove(0);		// do not send this person as of yet, make them wait. 
@@ -40,9 +26,8 @@ public class Booth implements ClockListener {
 				completed++;	
 				
 			}	
-		}
-		
-//	}
+		}		
+	}
 	
 	public int getLeft() {
 		return Q.size();
