@@ -1,0 +1,21 @@
+package VoterBooth;
+
+public class RegularVoter extends Voter{
+
+	@Override
+	public void setCheckInTime(int checkInTime) {
+		this.checkInTime = checkInTime;
+		
+	}
+
+	@Override
+	public void setLeaveTime(int leaveTime) {
+		this.leaveTime = leaveTime;
+	}
+
+	@Override
+	public void setVotingBoothTime(int votingBoothTime) {
+		this.votingBoothTime = votingBoothTime;
+	}
+
+}
