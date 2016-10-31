@@ -3,34 +3,39 @@ import java.util.ArrayList;
 /**
  * @author   Roger Ferguson
  */
-public class TableAL implements ClockListener {
-	private ArrayList<Voter> Qbooths = new ArrayList<Voter>();
+public class Table implements ClockListener {
+	private ArrayList<Voter> Qtable = new ArrayList<Voter>();
 	
+	private ArrayList<Voter> Qbooths = new ArrayList<Voter>();
 	private int timeOfNextEvent = 0;
 	private int maxQlength = 0;
 	private Voter person;   // this is the person at the booth. 
 	private int completed = 0;
+	private Status status = new Status();
 	
-	public TableAL(ArrayList<Voter> Qbooths) {
-		
+	public Table(ArrayList<Voter> Qbooths) {
+		this.Qbooths= Qbooths;
 	}
 
 	public void add (Voter person)
 	{
-		Qbooths.add(person);
-		if (Qbooths.size() > maxQlength)
-			maxQlength = Qbooths.size();
+		Qtable.add(person);
+		if (Qtable.size() > maxQlength)
+			maxQlength = Qtable.size();
+		
 	}
+	
 	
 	public void event (int tick){
 		if (tick >= timeOfNextEvent) {
-//			if (person != null) { 			// Notice the delay that takes place here
-//				person.getDestination().add(person);    // take this person to the next station. 
-//			person = null;				// I have send the person on. 
-//			}
+			if (person != null) { 			// Notice the delay that takes place here
+				status.setEnterQTime(tick);
+				Qbooths.add(person);    // take this person to the next station. 
+			person = null;				// I have send the person on. 
+			}
 			
-			if (Qbooths.size() >= 1) {
-				person = Qbooths.remove(0);		// do not send this person as of yet, make them wait. 
+			if (Qtable.size() >= 1) {
+				person = Qtable.remove(0);		// do not send this person as of yet, make them wait. 
 				timeOfNextEvent = tick + (int) (person.getBoothTime() + 1);
 				completed++;										
 			}	
