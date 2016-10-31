@@ -1,0 +1,22 @@
+package VoterBooth;
+
+public class SpecialNeedsVoter extends Voter {
+
+	@Override
+	public void setLeaveTime(int leaveTime) {
+		this.leaveTime = leaveTime * 2;
+		
+	}
+
+	@Override
+	public void setVotingBoothTime(int votingBoothTime) {
+		this.votingBoothTime = votingBoothTime *3;
+		
+	}
+
+	@Override
+	public void setCheckInTime(int checkInTime) {
+		this.checkInTime = (int) (checkInTime * 1.5);
+	}
+
+}
