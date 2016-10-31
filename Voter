@@ -2,17 +2,26 @@ package VoterBooth;
 /**
  * @author   Roger Ferguson
  */
-	public class Voter{
+	public abstract class Voter{
 		
 	private int tickTime;
 	private Booth Destination;
+	
 	protected int leaveTime;
-	protected double checkInTime;
+	protected int checkInTime;
+	protected int votingBoothTime;
 	protected double boothTime;
 	
+	public abstract void setCheckInTime(int checkInTime);
+	public abstract void setLeaveTime(int leaveTime);
+	public abstract void setVotingBoothTime(int votingBoothTime);
 	
 	public double getBoothTime() {
 		return boothTime;
+	}
+	
+	public void setBoothTime(double checkInTime) {
+		this.boothTime = checkInTime;
 	}
 	
 	public Booth getDestination() {
@@ -30,26 +39,4 @@ package VoterBooth;
 	public void setTickTime(int tickTime) {
 		this.tickTime = tickTime;
 	}
-
-	public void setBoothTime(double checkInTime) {
-		this.boothTime = checkInTime;
-	}
-
-	public int getLeaveTime() {
-		return leaveTime;
-	}
-
-	public void setLeaveTime(int leaveTime) {
-		this.leaveTime = leaveTime;
-	}
-
-	public double getCheckInTime() {
-		return checkInTime;
-	}
-
-	public void setCheckInTime(double checkInTime) {
-		this.checkInTime = checkInTime;
-	}
-	
-	
 }
