@@ -1,3 +1,4 @@
+package VotingBooth;
 import javax.swing.*;
 
 import java.awt.*;
@@ -12,13 +13,14 @@ import javax.swing.border.LineBorder;
 
 public class GuiPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	Clock clk;
 	BoothLine boothQueue;
 
 	private Status stat;
-	private JLabel tick,throughput,avgVoterFinish,numPeopleLeft,maxQAL,maxQMZ,votingBoothLine,deserters,
-	avgCheckInTimeSpec,avgCheckInTimeLim,avgCheckInTimeReg,regVoters,specVoters,limVoters,supSpecVoters,
-	regThrough,limThrough,specThrough,supSpecThrough;
+	private JLabel tick,throughput,avg_voter_fin,num_people_left,max_Q_al_table,max_Q_mz_table,voting_booth_line,leavers,
+	avg_check_in_time_spec,avg_check_in_time_lim,avg_check_in_time_reg,reg_voters,spec_voters,lim_voters,sup_spec_voters,
+	reg_through_put,lim_through,spec_through,sup_spec_through;
 	private JTextField sectonext = new JTextField(8);
 	private JTextField avgtocheckin = new JTextField(8);
 	private JTextField total = new JTextField(8);
@@ -114,63 +116,63 @@ public class GuiPanel extends JPanel {
 		out_put_pane.setLayout(new GridLayout(21,2));
 		tick = new JLabel("0");
 		throughput = new JLabel("");
-		avgVoterFinish = new JLabel("");
-		numPeopleLeft = new JLabel("");
-		maxQAL = new JLabel("");
-		maxQMZ = new JLabel("");
-		votingBoothLine = new JLabel("");
-		deserters = new JLabel("");
-		avgCheckInTimeReg = new JLabel("");
-		avgCheckInTimeSpec = new JLabel("");
-		avgCheckInTimeLim = new JLabel("");
-		regVoters = new JLabel("");
-		specVoters = new JLabel("");
-		limVoters = new JLabel("");
-		supSpecVoters = new JLabel("");
-		regThrough = new JLabel("");
-		limThrough = new JLabel("");
-		specThrough = new JLabel("");
-		supSpecThrough = new JLabel("");
+		avg_voter_fin = new JLabel("");
+		num_people_left = new JLabel("");
+		max_Q_al_table = new JLabel("");
+		max_Q_mz_table = new JLabel("");
+		voting_booth_line = new JLabel("");
+		leavers = new JLabel("");
+		avg_check_in_time_reg = new JLabel("");
+		avg_check_in_time_spec = new JLabel("");
+		avg_check_in_time_lim = new JLabel("");
+		reg_voters = new JLabel("");
+		spec_voters = new JLabel("");
+		lim_voters = new JLabel("");
+		sup_spec_voters = new JLabel("");
+		reg_through_put = new JLabel("");
+		lim_through = new JLabel("");
+		spec_through = new JLabel("");
+		sup_spec_through = new JLabel("");
 		out_put_pane.add(new JLabel("Output Information"));
 		out_put_pane.add(new JLabel("--------------------------------"));
-		out_put_pane.add(new JLabel("Seconds Elapsed"));
+		out_put_pane.add(new JLabel("Seconds "));
 		out_put_pane.add(tick);
 		out_put_pane.add(new JLabel("Throughput"));
 		out_put_pane.add(throughput);
-		out_put_pane.add(new JLabel("Regular Throughput"));
-		out_put_pane.add(regThrough);
-		out_put_pane.add(new JLabel("Special Throughput"));
-		out_put_pane.add(specThrough);
-		out_put_pane.add(new JLabel("Limited Time Throughput"));
-		out_put_pane.add(limThrough);
-		out_put_pane.add(new JLabel("Super Special Throughput"));
-		out_put_pane.add(supSpecThrough);
 		out_put_pane.add(new JLabel("Average Total Voter Time"));
-		out_put_pane.add(avgVoterFinish);
-		out_put_pane.add(new JLabel("Number of People Left in Line"));
-		out_put_pane.add(numPeopleLeft);
+		out_put_pane.add(avg_voter_fin);
 		out_put_pane.add(new JLabel("Max Que Length A-L"));
-		out_put_pane.add(maxQAL);
+		out_put_pane.add(max_Q_al_table);
 		out_put_pane.add(new JLabel("Max Que Length M-Z"));
-		out_put_pane.add(maxQMZ);
+		out_put_pane.add(max_Q_mz_table);
+		out_put_pane.add(new JLabel("Regular Voters Throughput"));
+		out_put_pane.add(reg_through_put);
+		out_put_pane.add(new JLabel("Special Needs Voters Throughput"));
+		out_put_pane.add(spec_through);
+		out_put_pane.add(new JLabel("Limited Time Voters Throughput"));
+		out_put_pane.add(lim_through);
+		out_put_pane.add(new JLabel("Super Special Needs Voters Amount"));
+		out_put_pane.add(sup_spec_through);
+		out_put_pane.add(new JLabel("Number of People Left in Line"));
+		out_put_pane.add(num_people_left);
 		out_put_pane.add(new JLabel("Max Que Length Voting Booth Line"));
-		out_put_pane.add(votingBoothLine);
+		out_put_pane.add(voting_booth_line);
 		out_put_pane.add(new JLabel("People that left before voting"));
-		out_put_pane.add(deserters);
+		out_put_pane.add(leavers);
 		out_put_pane.add(new JLabel("Number of Regular Voters"));
-		out_put_pane.add(regVoters);
+		out_put_pane.add(reg_voters);
 		out_put_pane.add(new JLabel("Number of Limited Voters"));
-		out_put_pane.add(limVoters);
+		out_put_pane.add(lim_voters);
 		out_put_pane.add(new JLabel("Number of Special Voters"));
-		out_put_pane.add(specVoters);
+		out_put_pane.add(spec_voters);
 		out_put_pane.add(new JLabel("Number of Super Special Voters"));
-		out_put_pane.add(supSpecVoters);
+		out_put_pane.add(sup_spec_voters);
 		out_put_pane.add(new JLabel("Average Regular Voter Check In"));
-		out_put_pane.add(avgCheckInTimeReg);
+		out_put_pane.add(avg_check_in_time_reg);
 		out_put_pane.add(new JLabel("Average Special Voter Check In"));
-		out_put_pane.add(avgCheckInTimeSpec);
+		out_put_pane.add(avg_check_in_time_spec);
 		out_put_pane.add(new JLabel("Average Limited Voter Check In"));
-		out_put_pane.add(avgCheckInTimeLim);
+		out_put_pane.add(avg_check_in_time_lim);
 		out_put_pane.setPreferredSize(new Dimension(1000,350));
 		out_put_pane.revalidate();
 		return out_put_pane;
@@ -179,36 +181,36 @@ public class GuiPanel extends JPanel {
 	public void updatePanels(){
 		tick.setText("" + stat.getTick());
 		throughput.setText("" + stat.getThroughPut());
-		regThrough.setText("" + stat.getRegThrough());
-		limThrough.setText("" + stat.getLimThrough());
-		specThrough.setText("" + stat.getSpecThrough());
-		supSpecThrough.setText("" + stat.getSupSpecThrough());
-		numPeopleLeft.setText(""
+		reg_through_put.setText("" + stat.getRegThrough());
+		lim_through.setText("" + stat.getLimThrough());
+		spec_through.setText("" + stat.getSpecThrough());
+		sup_spec_through.setText("" + stat.getSupSpecThrough());
+		num_people_left.setText(""
 				+ (stat.getAL().getLeft() + stat.getMZ().getLeft() + 
 						stat.getBoothQueue().getLeft()));
-		maxQAL.setText("" + stat.getAL().getMaxQlength());
-		maxQMZ.setText("" + stat.getMZ().getMaxQlength());
-		votingBoothLine.setText("" + stat.getBoothQueue()
+		max_Q_al_table.setText("" + stat.getAL().getMaxQlength());
+		max_Q_mz_table.setText("" + stat.getMZ().getMaxQlength());
+		voting_booth_line.setText("" + stat.getBoothQueue()
 		.getMaxQlength());
-		deserters.setText("" + stat.getDeserters());
-		regVoters.setText("" + stat.getRegVoters());
-		specVoters.setText("" + stat.getSpecVoters());
-		limVoters.setText("" + stat.getLimVoters());
-		supSpecVoters.setText("" + stat.getSupSpecVoters());
+		leavers.setText("" + stat.getDeserters());
+		reg_voters.setText("" + stat.getRegVoters());
+		spec_voters.setText("" + stat.getSpecVoters());
+		lim_voters.setText("" + stat.getLimVoters());
+		sup_spec_voters.setText("" + stat.getSupSpecVoters());
 		if (stat.getNumPeopleCheckInReg() >= 1) {
-			avgCheckInTimeReg.setText("" + (stat.getTimeAtCheckInReg()/
+			avg_check_in_time_reg.setText("" + (stat.getTimeAtCheckInReg()/
 					stat.getNumPeopleCheckInReg()));
 		}
 		if(stat.getNumPeopleCheckedInSpec() >= 1){
-			avgCheckInTimeSpec.setText("" + 
+			avg_check_in_time_spec.setText("" + 
 					(stat.getTimeAtCheckInSpec()/stat.getNumPeopleCheckedInSpec()));
 		}
 		if(stat.getNumPeopleCheckedInLim() >= 1){
-			avgCheckInTimeLim.setText("" + (stat.getTimeatCheckInLim()/
+			avg_check_in_time_lim.setText("" + (stat.getTimeatCheckInLim()/
 					stat.getNumPeopleCheckedInLim()));
 		}
 		if(stat.getThroughPut() >= 1)
-			avgVoterFinish.setText("" +(stat.getTotalTime()/
+			avg_voter_fin.setText("" +(stat.getTotalTime()/
 					stat.getThroughPut()));
 	}
 	private class ButtonListener implements ActionListener{
