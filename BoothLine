@@ -1,3 +1,4 @@
+package VotingBooth;
 import java.util.ArrayList;
 /**********************************************************************
 Hold the voters that are waiting to enter a booth to vote
