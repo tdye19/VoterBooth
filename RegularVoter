@@ -1,9 +1,8 @@
-package VoterBooth;
+package VotingBooth;
 
 public class RegularVoter extends Voter{
-
-	@Override
-	public void setCheckInTime(int checkInTime) {
+	
+	public void setCheckInTime(double checkInTime) {
 		this.checkInTime = checkInTime;
 		
 	}
@@ -13,9 +12,8 @@ public class RegularVoter extends Voter{
 		this.leaveTime = leaveTime;
 	}
 
-	@Override
 	public void setVotingBoothTime(int votingBoothTime) {
-		this.votingBoothTime = votingBoothTime;
+		this.boothTime = votingBoothTime;
 	}
 
 }
