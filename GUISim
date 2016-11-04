@@ -6,14 +6,13 @@ public class GuiSim{
 	{	
 		JFrame frame = new JFrame ("Voting Booth Simulation");
 		frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-		Status info = new Status();
-		Sim sim = new Sim(info);
-		info.setSim(sim);
-		info.setPanel(new GuiPanel(info));
-		frame.getContentPane().add(info.getPanel());
+		Status stat = new Status();
+		Sim sim = new Sim(stat);
+		stat.setSim(sim);
+		stat.setPanel(new GuiPanel(stat));
+		frame.getContentPane().add(stat.getPanel());
 		frame.setSize(1000, 760);
-		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.setResizable(true);
+		
 	}
 }
