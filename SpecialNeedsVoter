@@ -1,4 +1,4 @@
-package VoterBooth;
+package VotingBooth;
 
 public class SpecialNeedsVoter extends Voter {
 
@@ -8,14 +8,13 @@ public class SpecialNeedsVoter extends Voter {
 		
 	}
 
-	@Override
 	public void setVotingBoothTime(int votingBoothTime) {
-		this.votingBoothTime = votingBoothTime *3;
+		this.boothTime = votingBoothTime *3;
 		
 	}
 
 	@Override
-	public void setCheckInTime(int checkInTime) {
+	public void setCheckInTime(double checkInTime) {
 		this.checkInTime = (int) (checkInTime * 1.5);
 	}
 
