@@ -1,4 +1,4 @@
-
+package VotingBooth;
 /**********************************************************************
 Clock is what controls the timing of the simulation. It lets all the 
 clock listeners know when they need to run their even methods 
@@ -54,8 +54,7 @@ public class Clock {
 	/*******************************************************************
 	Removes a booth from the array of clockListners 
 	 ******************************************************************/
-	public void remBooth(){
-		
+	public void remBooth(){		
 		int you = 0;
 		
 		//run through all clockListners
