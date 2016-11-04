@@ -17,7 +17,7 @@ public class Booth implements ClockListener {
 	private BoothLine boothQueue;
 
 	/** Class that holds all the info on the simulation */
-	private Status info;
+	private Status stat;
 
 	/*******************************************************************
 	Constructor creates a new booth that is feed by boothQueue
@@ -25,9 +25,9 @@ public class Booth implements ClockListener {
 	@param info holds all information on sim
 	@param boothQueue that line of waiting voters
 	 ******************************************************************/
-	public Booth(BoothLine boothQueue, Status info){
-		this.boothQueue = boothQueue;
-		this.info = info;
+	public Booth(BoothLine Q, Status stat){
+		this.Q = Q;
+		this.stat = stat;
 	}
 
 	/*******************************************************************
@@ -43,25 +43,25 @@ public class Booth implements ClockListener {
 			if(!boothQueue.getQ().isEmpty()){
 				//there is a person---get there time to leave the booth
 				if(person != null){
-					info.setTotalTime(tick - (person.getTickTime()));
+					stat.setTotalTime(tick - (person.getTickTime()));
 				}
 
 				person = boothQueue.getVoter();		
 				timeOfNextEvent = tick + (int) (person.getBoothTime() + 1);
-				info.incThroughPut();	
+				stat.incThroughPut();	
 
 				//count each type of voter that voted
 				if(person instanceof RegularVoter){
-					info.increaseRegularThroughput();
+					stat.increaseRegularThroughput();
 				}
 				if(person instanceof SpecialNeedsVoter){
-					info.increaseSpecialThroughput();
+					stat.increaseSpecialThroughput();
 				}
 				if(person instanceof LimitedTimeVoter){
-					info.increaseLimitedThroughput();
+					stat.increaseLimitedThroughput();
 				}
 				if(person instanceof SuperSpecialNeeds){
-					info.increaseSuperSpecialThroughput();
+					stat.increaseSuperSpecialThroughput();
 				}
 			}
 		}
