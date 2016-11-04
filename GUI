@@ -1,158 +1,284 @@
-package VoterBooth;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-public class GUI extends JFrame implements ActionListener{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private JFrame frame;
-	private JPanel p;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
-	// buttons for user interaction
-	JButton start_btn, quit_btn;
 
-	// labels for LEFT-side of GUI
-	JLabel input_info, lines_top, seconds_to_next, avg_check_in_time, total_time,
-	avg_voting_time, seconds_before_leaving, num_of_booths, output_info, lines_bottom, 
-	throughput, begin_to_end_time, num_of_people_left, max_lengthAL, max_lengthMZ, 
-	max_q_line_length;
+public class GuiPanel extends JPanel {
 
-	// textfields for user inputs
-	JTextField seconds_to_next_input, avg_check_in_time_input, total_time_input,
-	avg_voting_time_input, seconds_before_leaving_input, num_of_booths_input;
+	Clock clk;
+	BoothLine boothQueue;
 
-	// JLabels for outputs
-	JLabel throughput_output, begin_to_end_time_output, num_of_people_left_output,
-	max_lengthAL_output, max_lengthMZ_output, max_q_line_length_output;
-
-	public GUI() {
-
-		frame = new JFrame();
-		frame.setTitle("Voting Simulation:");
-		frame.setSize(750, 400);
-		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-		p = new JPanel();
-		GridLayout layout = new GridLayout(0, 2);
-		p.setLayout(layout);
+	private Status stat;
+	private JLabel tick,throughput,avgVoterFinish,numPeopleLeft,maxQAL,maxQMZ,votingBoothLine,deserters,
+	avgCheckInTimeSpec,avgCheckInTimeLim,avgCheckInTimeReg,regVoters,specVoters,limVoters,supSpecVoters,
+	regThrough,limThrough,specThrough,supSpecThrough;
+	private JTextField sectonext = new JTextField(8);
+	private JTextField avgtocheckin = new JTextField(8);
+	private JTextField total = new JTextField(8);
+	private JTextField avgvotetime = new JTextField(8);
+	private JTextField secpersonleave = new JTextField(8);
+	private JTextField txtNumBooths = new JTextField(8);
+	private JButton startbttn,quitbttn,addbttn,subbttn;
+	private ButtonListener listener = new ButtonListener();
 
 
 
-		// instantiate LEFT-side components
-		lines_top = new JLabel("");
+	public GuiPanel(Status stat){
 
-		start_btn = new JButton("Start Simulation");
-		input_info = new JLabel("Input Information");
-		seconds_to_next = new JLabel("Seconds to Next Person");
-		avg_check_in_time = new JLabel("Average Seconds for CheckIn");
-		total_time = new JLabel("Total Time in Seconds");
-		avg_voting_time = new JLabel("Average Seconds for Voting");
-		seconds_before_leaving = new JLabel("Seconds Before Person Leaves");
-		num_of_booths = new JLabel("Number of Booths");
-
-		output_info = new JLabel("Output information");
-		throughput = new JLabel("Throughput");
-		begin_to_end_time = new JLabel("Average time for a voter form start to finish:");
-		num_of_people_left = new JLabel("Number of people left line");
-		max_lengthAL = new JLabel("Max Q length CheckIn A-L");
-		max_lengthMZ = new JLabel("Max Q length CheckIn M-Z");
-		max_q_line_length = new JLabel("Max Q length Voting Booth Line");
-
-
-		// instantiate RIGHT-side components
-		lines_bottom = new JLabel("-------------------------------------");
-		quit_btn = new JButton("Quit Simulation");
-		throughput_output = new JLabel();
-		begin_to_end_time_output = new JLabel();
-		num_of_people_left_output = new JLabel();
-		max_lengthAL_output = new JLabel();
-		max_lengthMZ_output = new JLabel();
-		max_q_line_length_output = new JLabel();
-
-		seconds_to_next_input = new JTextField("", 5);
-		avg_check_in_time_input = new JTextField("", 5);
-		total_time_input = new JTextField("", 5);
-		avg_voting_time_input = new JTextField("", 5);
-		seconds_before_leaving_input = new JTextField("", 5);
-		num_of_booths_input = new JTextField("", 5);
-
-		// add action listeners to the buttons
-		start_btn.addActionListener(this);
-		quit_btn.addActionListener(this);
-
-		// place components on JPanel
-		p.add(input_info);
-		p.add(lines_top);
-		p.add(seconds_to_next);
-		p.add(seconds_to_next_input);
-		p.add(avg_check_in_time);
-		p.add(avg_check_in_time_input);
-		p.add(total_time);
-		p.add(total_time_input);
-		p.add(avg_voting_time);
-		p.add(avg_voting_time_input);
-		p.add(seconds_before_leaving);
-		p.add(seconds_before_leaving_input);
-		p.add(num_of_booths);
-		p.add(num_of_booths_input);
-		p.add(start_btn);
-		p.add(quit_btn);
-		p.add(output_info);
-		p.add(lines_bottom);
-		p.add(throughput);
-		p.add(throughput_output);
-		p.add(begin_to_end_time);
-		p.add(begin_to_end_time_output);
-		p.add(num_of_people_left);
-		p.add(num_of_people_left_output);
-		p.add(max_lengthAL);
-		p.add(max_lengthAL_output);
-		p.add(max_lengthMZ);
-		p.add(max_lengthMZ_output);
-		p.add(max_q_line_length);
-		p.add(max_q_line_length_output);
-
-		frame.add(p);
-		frame.setVisible(true);
+		this.stat = stat;
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		JPanel controlPanel = new JPanel();
+		controlPanel.setLayout(new BorderLayout());
+		controlPanel.add(createInputPanel(), BorderLayout.NORTH);
+		controlPanel.add(createButtonPanel());
+		controlPanel.add(createOutputPanel(), BorderLayout.SOUTH);
+		add(controlPanel);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == quit_btn) {
-			System.exit(0);
-		}
-		else if (e.getSource() == start_btn) {
-			
-		}
+	/*******************************************************************
+	 * Creates a JPanel which displays all the JLabels and JTextFields
+	 * that are used for the inputs for the simulation.
+	 *
+	 * @return JPanel to be added to the main Panel.
+	 ******************************************************************/
+	private JPanel createInputPanel(){
+		sectonext.setText("");
+		avgtocheckin.setText("");
+		total.setText("");
+		avgvotetime.setText("");
+		secpersonleave.setText("");
+		txtNumBooths.setText("");
+		JPanel inpane = new JPanel();
+		inpane.setLayout(new GridLayout(7,2));
+		inpane.add(new JLabel("Input Information"));
+		inpane.add(new JLabel("---------------------------------"));
+		inpane.add(new JLabel("Seconds to Next Person"));
+		inpane.add(sectonext);
+		inpane.add(new JLabel("Average seconds for Check-In"));
+		inpane.add(avgtocheckin);
+		inpane.add(new JLabel("Total Time in Seconds"));
+		inpane.add(total);
+		inpane.add(new JLabel("Average Seconds for Voting"));
+		inpane.add(avgvotetime);
+		inpane.add(new JLabel("Seconds before Person Leaves"));
+		inpane.add(secpersonleave);
+		inpane.add(new JLabel("Number of Booths"));
+		inpane.add(txtNumBooths);
+		inpane.setPreferredSize(new Dimension(1000,160));
+		inpane.revalidate();
+		return inpane;
+
 	}
 
+	/*******************************************************************
+	 * creates the JPanel that contains the buttons to interact with the
+	 * simulation.
+	 *
+	 * @return JPanel to add to the main panel.
+	 ******************************************************************/
+	private JPanel createButtonPanel(){
+		JPanel buttonPanel = new JPanel();
+		startbttn = new JButton("Start Simulation");
+		quitbttn = new JButton("Quit Simulation");
+		addbttn = new JButton("Add Booth");
+		subbttn = new JButton("Subtract Booth");
+		startbttn.addActionListener(listener);
+		quitbttn.addActionListener(listener);
+		addbttn.addActionListener(listener);
+		subbttn.addActionListener(listener);
+		buttonPanel.add(startbttn);
+		buttonPanel.add(quitbttn);
+		buttonPanel.add(addbttn);
+		buttonPanel.add(subbttn);
+		return buttonPanel;
+	}
 
-	public static void main(String[] args) {
-		new GUI();
-//		ArrayList<Voter> Qbooths = new ArrayList<Voter>();
-//		ArrayList<Booth> booths = new ArrayList<Booth>();
-//		Clock clk = new Clock();
-//		TableAL tableal = new TableAL(Qbooths);
-//		TableMZ tablemz = new TableMZ(Qbooths);
-//
-//		
-//
-//		VoterProducer produce = new VoterProducer(tableal,tablemz,20,15) ;	
-//		clk.add(produce);
-//		clk.add(booth);
-//
-//		clk.run(10000);
-//
-//		System.out.println("Through put is: " + booth.getThroughPut() + " people.");
-//		System.out.println("People that are still in the Q:" + booth.getLeft() + " people.");
-//		System.out.println ("Max Q length:" + booth.getMaxQlength() + " people.");
-//	}
+	/*******************************************************************
+	 * Creates a JPanel that holds the JLabels that display the output
+	 * of the simulation.  Certain labels are instance variables as they
+	 * will need to be able to upate information as the simulation
+	 * progresses.
+	 *
+	 * @return JLabel of output information to add to the main panel.
+	 ******************************************************************/
+	private JPanel createOutputPanel(){
 
+		JPanel out_put_pane = new JPanel();
+		out_put_pane.setLayout(new GridLayout(21,2));
+		tick = new JLabel("0");
+		throughput = new JLabel("");
+		avgVoterFinish = new JLabel("");
+		numPeopleLeft = new JLabel("");
+		maxQAL = new JLabel("");
+		maxQMZ = new JLabel("");
+		votingBoothLine = new JLabel("");
+		deserters = new JLabel("");
+		avgCheckInTimeReg = new JLabel("");
+		avgCheckInTimeSpec = new JLabel("");
+		avgCheckInTimeLim = new JLabel("");
+		regVoters = new JLabel("");
+		specVoters = new JLabel("");
+		limVoters = new JLabel("");
+		supSpecVoters = new JLabel("");
+		regThrough = new JLabel("");
+		limThrough = new JLabel("");
+		specThrough = new JLabel("");
+		supSpecThrough = new JLabel("");
+		out_put_pane.add(new JLabel("Output Information"));
+		out_put_pane.add(new JLabel("--------------------------------"));
+		out_put_pane.add(new JLabel("Seconds Elapsed"));
+		out_put_pane.add(tick);
+		out_put_pane.add(new JLabel("Throughput"));
+		out_put_pane.add(throughput);
+		out_put_pane.add(new JLabel("Regular Throughput"));
+		out_put_pane.add(regThrough);
+		out_put_pane.add(new JLabel("Special Throughput"));
+		out_put_pane.add(specThrough);
+		out_put_pane.add(new JLabel("Limited Time Throughput"));
+		out_put_pane.add(limThrough);
+		out_put_pane.add(new JLabel("Super Special Throughput"));
+		out_put_pane.add(supSpecThrough);
+		out_put_pane.add(new JLabel("Average Total Voter Time"));
+		out_put_pane.add(avgVoterFinish);
+		out_put_pane.add(new JLabel("Number of People Left in Line"));
+		out_put_pane.add(numPeopleLeft);
+		out_put_pane.add(new JLabel("Max Que Length A-L"));
+		out_put_pane.add(maxQAL);
+		out_put_pane.add(new JLabel("Max Que Length M-Z"));
+		out_put_pane.add(maxQMZ);
+		out_put_pane.add(new JLabel("Max Que Length Voting Booth Line"));
+		out_put_pane.add(votingBoothLine);
+		out_put_pane.add(new JLabel("People that left before voting"));
+		out_put_pane.add(deserters);
+		out_put_pane.add(new JLabel("Number of Regular Voters"));
+		out_put_pane.add(regVoters);
+		out_put_pane.add(new JLabel("Number of Limited Voters"));
+		out_put_pane.add(limVoters);
+		out_put_pane.add(new JLabel("Number of Special Voters"));
+		out_put_pane.add(specVoters);
+		out_put_pane.add(new JLabel("Number of Super Special Voters"));
+		out_put_pane.add(supSpecVoters);
+		out_put_pane.add(new JLabel("Average Regular Voter Check In"));
+		out_put_pane.add(avgCheckInTimeReg);
+		out_put_pane.add(new JLabel("Average Special Voter Check In"));
+		out_put_pane.add(avgCheckInTimeSpec);
+		out_put_pane.add(new JLabel("Average Limited Voter Check In"));
+		out_put_pane.add(avgCheckInTimeLim);
+		out_put_pane.setPreferredSize(new Dimension(1000,350));
+		out_put_pane.revalidate();
+		return out_put_pane;
 
-}
+	}
+	public void updatePanels(){
+		tick.setText("" + stat.getTick());
+		throughput.setText("" + stat.getThroughPut());
+		regThrough.setText("" + stat.getRegThrough());
+		limThrough.setText("" + stat.getLimThrough());
+		specThrough.setText("" + stat.getSpecThrough());
+		supSpecThrough.setText("" + stat.getSupSpecThrough());
+		numPeopleLeft.setText(""
+				+ (stat.getAL().getLeft() + stat.getMZ().getLeft() + 
+						stat.getBoothQueue().getLeft()));
+		maxQAL.setText("" + stat.getAL().getMaxQlength());
+		maxQMZ.setText("" + stat.getMZ().getMaxQlength());
+		votingBoothLine.setText("" + stat.getBoothQueue()
+		.getMaxQlength());
+		deserters.setText("" + stat.getDeserters());
+		regVoters.setText("" + stat.getRegVoters());
+		specVoters.setText("" + stat.getSpecVoters());
+		limVoters.setText("" + stat.getLimVoters());
+		supSpecVoters.setText("" + stat.getSupSpecVoters());
+		if (stat.getNumPeopleCheckInReg() >= 1) {
+			avgCheckInTimeReg.setText("" + (stat.getTimeAtCheckInReg()/
+					stat.getNumPeopleCheckInReg()));
+		}
+		if(stat.getNumPeopleCheckedInSpec() >= 1){
+			avgCheckInTimeSpec.setText("" + 
+					(stat.getTimeAtCheckInSpec()/stat.getNumPeopleCheckedInSpec()));
+		}
+		if(stat.getNumPeopleCheckedInLim() >= 1){
+			avgCheckInTimeLim.setText("" + (stat.getTimeatCheckInLim()/
+					stat.getNumPeopleCheckedInLim()));
+		}
+		if(stat.getThroughPut() >= 1)
+			avgVoterFinish.setText("" +(stat.getTotalTime()/
+					stat.getThroughPut()));
+	}
+	private class ButtonListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			if(e.getSource()==quitbttn){
+				System.exit(0);
+			}
+			if(e.getSource()==addbttn){
+				stat.getSim().addBooth();
+			}
+
+			if(e.getSource()==subbttn){
+				if(stat.getNumBooths() > 1){
+					stat.getSim().remBooth();
+				}
+			}
+			if(e.getSource()==startbttn){
+				if(stat.getTick() == 0){
+					getUserInfo();
+					stat.getSim().runSim();  
+				}
+			}
+		}
+		private void getUserInfo() {
+			try{
+				stat.setSecondsToPerson
+				(Integer.parseInt(sectonext.getText()));
+				stat.setSecondsCheckIn
+				(Integer.parseInt(avgtocheckin.getText()));
+				stat.setTotalSec
+				(Integer.parseInt(total.getText()));
+				stat.setAvgTimeVoting
+				(Integer.parseInt(avgvotetime.getText()));
+				stat.setSecondsLeave
+				(Integer.parseInt(secpersonleave.getText()));
+				if(stat.getTick() <= 1){
+					int booths = Integer.parseInt(txtNumBooths.getText());
+					if(booths > 10){
+						stat.setNumBooths(10);
+						JOptionPane.showMessageDialog(null,
+								"Can only have 10 booths max.");
+					}
+					else
+						stat.setNumBooths(booths);
+				}
+
+				int secs_to_person = stat.getSecondsToPerson();
+				int secs_check_in = stat.getSecondsCheckIn();
+				int avg_time_voting = stat.getAvgTimeVoting();
+				int secs_leave = stat.getSecondsLeave();
+				int num_booths= stat.getNumBooths();
+
+				if (secs_to_person < 1 || secs_check_in <1 || 
+						stat.getTotalSec() <1|| avg_time_voting<1||
+						secs_leave <1|| num_booths < 1){
+					throw new InvalidParameterException();
+				}
+			}
+			catch(NumberFormatException e1){
+				JOptionPane.showMessageDialog(null, "Must be a number");
+				System.exit(0);
+			}
+			catch(InvalidParameterException e2){
+				JOptionPane.showMessageDialog(null, 
+						"Numbers can not be negative");
+				System.exit(0);
+			}
+		}
+
+	}
 }
