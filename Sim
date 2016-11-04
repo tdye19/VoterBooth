@@ -1,52 +1,180 @@
-package VoterBooth;
-
-import java.util.ArrayList;
-
-/**
- * @author Roger Ferguson
- *
- */
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
+/**********************************************************************
+Sim class organizes and instantiates everything that is in the 
+simulation
+@author Tucker Dye and Ron Rounaifer
+@version Fall semester 2016
+ **********************************************************************/
 public class Sim {
 	
-	public static void main (String[] args) {
+	/** Keeps track of all information on the simulation */
+	private Status info;
+	
+	/** Current time of the simulation */
+	private int currentTime = 0;
+	
+	/** Clock that controls the time of the simulation */
+	private Clock clk;
+	
+	/** Produces voters that are introduced into the simulation */
+	private VoterProducer produce;
+	
+	/** Time until the next voter is created */
+	private int secondsToPerson;
+	
+	/** Average seconds for a voter to check in */
+	private int secondsCheckIn;
+	
+	/** Total time the simulation will run */
+	private int totalSec;
+	
+	/** Average time it takes a voter to vote */
+	private int avgTimeVoting;
+	
+	/** Time a voter will wait before they leave */
+	private int secondsLeave;
+	
+	/** Number of voting booths in the simulation */
+	private int numBooths;
+	
+	/*******************************************************************
+	Constructor brings in info, which stors all information on the
+	simulation
+	
+	@param info holds all information on sim
+	 ******************************************************************/
+	public Sim(Status info){
+		this.info = info;
 		
-		 ArrayList<Voter> Qbooths = new ArrayList<Voter>();
-		 Status status = new Status();
-		 
-		Clock clk = new Clock();
-		Table tableal = new Table(Qbooths);
-		Table tablemz = new Table(Qbooths);
-		Booth[] booths = new Booth[100];
+	}
+	
+	/*******************************************************************
+	Organizes all of the simulation elements and begins the simulation
+	*******************************************************************/
+	public void runSim() {
 		
+		//Get all information from SimStatus
+		secondsToPerson = info.getSecondsToPerson();
+		secondsCheckIn = info.getSecondsCheckIn();
+		totalSec = info.getTotalSec();
+		avgTimeVoting = info.getAvgTimeVoting();
+		secondsLeave = info.getSecondsLeave();
+		numBooths = info.getNumBooths();
 		
+		//create and boothQueue and give it to SimStatus
+		BoothLine boothQueue = new BoothLine(info);
+		info.setBoothQueue(boothQueue);
+        info.setLeaveTime(secondsLeave);
+        
+        //create new clock
+		clk = new Clock(info);
 		
-		// 		int numOfTicksNextPerson = 20 
-		//      int averageBoothTime = 20
+		//create check in booths
+		Table AL = new Table(boothQueue, info);
+		info.setAL(AL);
+		Table MZ = new Table(boothQueue, info);
+		info.setMZ(MZ);
+		
+		//create new voter producer
+		produce = new VoterProducer(AL, MZ, secondsToPerson,
+				avgTimeVoting, secondsCheckIn, info);
 
-		VoterProducer produce = new VoterProducer(tableal,tablemz,20,20,20,20,20);	
+		//add elements to the clock
+		clk.add(boothQueue);
+		clk.add(AL);
+		clk.add(MZ);
 		
-		for (int i = 0; i < 10; i++) {
-			booths[i] = new Booth(Qbooths);
-			clk.add(booths[i]);
+		//create the desired number of voting booths and add them to clk
+		for (int i = 0; i < numBooths; i++) {
+			Booth booth = new Booth(boothQueue, info);
+			clk.add(booth);
 		}
-			
+		
+		//add voter producer to the clock
 		clk.add(produce);
-		clk.add(tableal);
-		clk.add(tablemz);
-		clk.run(10000);
 
-		//System.out.println("Through put is: " + booth.getThroughPut() + " people.");
-		//System.out.println("People that are still in the Q:" + booth.getLeft() + " people.");
-		//System.out.println ("Max Q length:" + Booth.getMaxQlength() + " people.");
+		// new action listener for the timer
+		ActionListener action = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				//check if the simulation is over
+				if (currentTime <= totalSec) {
+					currentTime++;
+					//run the simulation for the current time
+					clk.run(currentTime);
+					
+					//date the queue lengths
+					info.setALQsize(AL.getLeft());
+					info.setMZQsize(MZ.getLeft());
+					
+					//update visual panels
+					info.getPanel().updatePanels();
+				}
+			}
+		};
 		
-		System.out.println("Through put at Table A - L: " + tableal.getThroughPut() + " people");
-		System.out.println("Through put  at Table M - Z: " + tablemz.getThroughPut() + " people");
+		//create and start new swing timer
+		Timer timer = new Timer(10, action);
+		timer.start();
+	}
+	
+	
+	/*******************************************************************
+	Updates all of the info for the simulation from user input
+	 ******************************************************************/
+	public void update(){
 		
-		System.out.println("Max Q at Table A - L: " + tableal.getMaxQlength() + " people");
-		System.out.println("Max Q at Table M - Z: " + tablemz.getMaxQlength() + " people");
+		//update all variables
+		secondsToPerson = info.getSecondsToPerson();
+		secondsCheckIn = info.getSecondsCheckIn();
+		totalSec = info.getTotalSec();
+		avgTimeVoting = info.getAvgTimeVoting();
+		secondsLeave = info.getSecondsLeave();
+		//numBooths = info.getNumBooths();
 		
-		System.out.println("People still at Table A - L: " + tableal.getLeft() + " people");
-		System.out.println("People still at Table M - Z: " + tablemz.getLeft() + " people");
-//		System.out.println("");
+		//update the voter producer
+		 produce = new VoterProducer(info.getAL(), info.getMZ(), 
+				 secondsToPerson,
+				avgTimeVoting, secondsCheckIn, info);
+		 
+		 //find the voter producer to update it
+		 for(int i = 0; i < clk.getMyListeners().length; i++){
+			 if(clk.getMyListeners()[i] instanceof VoterProducer){
+				 clk.getMyListeners()[i] = produce;
+			 }
+		 }
+	}
+
+	
+	/*******************************************************************
+	Returns the status of the simulation
+	
+	@return info SimStatus for the simulation
+	 ******************************************************************/
+	public Status getInfo() {
+		return info;
+	}
+	
+	/*******************************************************************
+	Adds a voting booth to the simulation
+	 ******************************************************************/
+	public void addBooth(){
+		
+		//make sure there is no more than 10 booths
+		if(info.getNumBooths() < 10){
+			//add a voting booth to clock
+    		clk.add(new Booth(info.getBoothQueue(), info));
+    		//increment the number of booths for SimStatus
+    		info.incrNumBooths();
+    	}
+	}
+	
+	/*******************************************************************
+	Removes a voting booth from the simulation
+	 ******************************************************************/
+	public void remBooth(){
+		clk.remBooth();
 	}
 }
