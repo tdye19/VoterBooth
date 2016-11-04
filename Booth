@@ -1,8 +1,8 @@
+package VotingBooth;
 /**********************************************************************
-Booth class holds one voter at a time for the length of time it takes 
-them to vote.
+Booth class 
 @author Tucker Dye and Ron Rounsifer
-@version Summer 2016
+@version Fall semester 2016
 @implements ClockListener
  **********************************************************************/
 public class Booth implements ClockListener {
@@ -14,7 +14,7 @@ public class Booth implements ClockListener {
 	private Voter person;
 
 	/** Queue of voters waiting to vote */
-	private BoothLine boothQueue;
+	private BoothLine Q;
 
 	/** Class that holds all the info on the simulation */
 	private Status stat;
@@ -40,25 +40,25 @@ public class Booth implements ClockListener {
 		if (tick >= timeOfNextEvent) {
 
 			//Check if there are any voters waiting to vote
-			if(!boothQueue.getQ().isEmpty()){
+			if(!Q.getQ().isEmpty()){
 				//there is a person---get there time to leave the booth
 				if(person != null){
 					stat.setTotalTime(tick - (person.getTickTime()));
 				}
 
-				person = boothQueue.getVoter();		
+				person = Q.getVoter();		
 				timeOfNextEvent = tick + (int) (person.getBoothTime() + 1);
 				stat.incThroughPut();	
 
 				//count each type of voter that voted
 				if(person instanceof RegularVoter){
-					stat.increaseRegularThroughput();
+					stat.incThroughPut();
 				}
 				if(person instanceof SpecialNeedsVoter){
-					stat.increaseSpecialThroughput();
+					stat.incThroughPut();
 				}
 				if(person instanceof LimitedTimeVoter){
-					stat.increaseLimitedThroughput();
+					stat.incThroughPut();
 				}
 				if(person instanceof SuperSpecialNeeds){
 					stat.increaseSuperSpecialThroughput();
