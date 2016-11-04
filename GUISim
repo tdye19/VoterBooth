@@ -1,4 +1,5 @@
- import javax.swing.JFrame;
+package VotingBooth; 
+import javax.swing.JFrame;
 
 public class GuiSim{
 
