@@ -52,16 +52,16 @@ public class Booth implements ClockListener {
 
 				//count each type of voter that voted
 				if(person instanceof RegularVoter){
-					info.incRegThrough();
+					info.increaseRegularThroughput();
 				}
 				if(person instanceof SpecialNeedsVoter){
-					info.incSpecThrough();
+					info.increaseSpecialThroughput();
 				}
 				if(person instanceof LimitedTimeVoter){
-					info.incLimThrough();
+					info.increaseLimitedThroughput();
 				}
 				if(person instanceof SuperSpecialNeeds){
-					info.incSupSpecThrough();
+					info.increaseSuperSpecialThroughput();
 				}
 			}
 		}
