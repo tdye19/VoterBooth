@@ -1,8 +1,9 @@
+package VotingBooth;
 import java.util.ArrayList;
 /**********************************************************************
 CheckInBooth is where the voter stays until their check in time is met 
-@author Jack Cottrell, Robert Molenhouse, Colin Lewis
-@version Summer 2016
+@author Tucker Dye and Ron Rounsifer
+@version Fall Semester 2016
 @implements ClockListener
  **********************************************************************/
 public class Table implements ClockListener {
