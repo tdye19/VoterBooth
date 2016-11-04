@@ -1,8 +1,9 @@
+package VotingBooth;
 import java.util.Random;
 /**********************************************************************
 Produces different types of voters for the simulation
-@author Jack Cottrell, Robert Molenhouse, Colin Lewis
-@version Summer 2016
+@author Tucker Dye and Ron Rounsifer
+@version Fall Semester 2016
 @implements ClockListener
  **********************************************************************/
 public class VoterProducer implements ClockListener {
