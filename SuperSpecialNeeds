@@ -1,35 +1,21 @@
-/**********************************************************************
-Voter that has long super times for voting, checking in, and leaving 
-@author Tucker Dye and Ron Rounsifer
-@version Summer 2016
-@extends Voter
- **********************************************************************/
+package VotingBooth;
+
 public class SuperSpecialNeeds extends Voter {
 	
-	/*******************************************************************
-	Quadruples the leave time from a normal voter leaveTime
-	
-	@param leaveTime time for voter to leave the a line
-	 ******************************************************************/
+	@Override
     public void setLeaveTime(int leaveTime) {
         this.leaveTime = (leaveTime * 4);
     }
 
-	/*******************************************************************
-	Multiplies the regular voter voting time by 6
 	
-	@param boothTime time it takes voter to vote
-	 ******************************************************************/
-    public void setBoothTime(double boothTime) {
-        this.boothTime = (boothTime * 6);
-    }
+	public void setVotingBoothTime(int votingBoothTime) {
+		this.boothTime = votingBoothTime * 3;
+		
+	}
 
-	/*******************************************************************
-	Triples the time to check in from a regular voter boothTime
-	
-	@param checkInTime time it take a voter to check in
-	 ******************************************************************/
-    public void setCheckInTime(double checkInTime) {
-        this.checkInTime = (checkInTime * 3);
-    }
+	@Override
+	public void setCheckInTime(double checkInTime) {
+		this.checkInTime = checkInTime * 4;
+		
+	}
 }
